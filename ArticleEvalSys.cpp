@@ -2,17 +2,21 @@
 using namespace std;
 
 class User {
+    int user_id;
     string Username;
     string Password;
 
     public:
         void SetUsername(string _username) { Username = _username; }
         void SetPassword(string _password) { Password = _password; }
+        void SetUserId(int _user_id) { user_id = _user_id; }
+        int GetUserId() { return user_id; }
 
 
     friend class Article;
 };
 User Users[100];
+int UserCount = 0;
 
 class Article {
     string ArticleId;
@@ -27,6 +31,8 @@ class Article {
 };
 Article Articles[100];
 
+Article User_Article[100][100];
+
 void RegisterUser() {
     cout << "USER REGISTER PAGE" << endl;
     User tempUser;
@@ -39,10 +45,13 @@ void RegisterUser() {
     cin >> pass;
     tempUser.SetPassword(pass);
     cout << "Register Done!";
+    tempUser.SetUserId(UserCount++);
+    Users[UserCount] = tempUser;
 }
 void RegisterArticle() {
     cout << "ARTICLE REGISTER PAGE" << endl;
     Article tempArticle;
+
     cout << "Title: ";
     string title;
     cin >> title;
