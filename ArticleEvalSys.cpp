@@ -5,6 +5,7 @@ class User {
     int user_id;
     string Username;
     string Password;
+    vector<int>ArticleIDs;
 
     public:
         void SetUsername(string _username) { Username = _username; }
@@ -15,7 +16,9 @@ class User {
 
     friend class Article;
 };
-User Users[100];
+
+//User Users[100];
+vector<User> Users;
 int UserCount = 0;
 
 class Article {
@@ -29,9 +32,9 @@ class Article {
 
    friend class User;
 };
-Article Articles[100];
+//Article Articles[100];
+vector <Article> Articles;
 
-Article User_Article[100][100];
 
 void RegisterUser() {
     cout << "USER REGISTER PAGE" << endl;
@@ -48,6 +51,7 @@ void RegisterUser() {
     tempUser.SetUserId(UserCount++);
     Users[UserCount] = tempUser;
 }
+// void LoginUser() {}
 void RegisterArticle() {
     cout << "ARTICLE REGISTER PAGE" << endl;
     Article tempArticle;
