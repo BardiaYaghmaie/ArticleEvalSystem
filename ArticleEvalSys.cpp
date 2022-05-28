@@ -16,7 +16,6 @@ class User {
 
     friend class Article;
 };
-
 //User Users[100];
 vector<User> Users;
 int UserCount = 0;
@@ -25,6 +24,7 @@ class Article {
     string ArticleId;
     string ArticleTitle;
     User Author;
+    bool Acception;
 
     public:
         void SetTitle(string _title) { ArticleTitle = _title; }
@@ -34,6 +34,7 @@ class Article {
 };
 //Article Articles[100];
 vector <Article> Articles;
+int ArticleCount = 0;
 
 
 void RegisterUser() {
@@ -71,6 +72,8 @@ void RegisterArticle() {
 
 int main() {
     cout << "WELCOME TO ARTICLE EVAL SYSTEM";
+
+    
 
     
 }
