@@ -5,7 +5,7 @@ class User {
     int user_id;
     string Username;
     string Password;
-    vector<int>ArticleIDs;
+    public: vector<int>ArticleIDs;
 
     public:
         void SetUsername(string _username) { Username = _username; }
@@ -66,6 +66,7 @@ void RegisterArticle() {
     cin >> id;
     tempArticle.SetArticleId(id);
     cout << "Register Done!";
+    //tempArticle.Author.ArticleIDs(articleCount++);
 }
 
 
