@@ -21,14 +21,18 @@ vector<User> Users;
 int UserCount = 0;
 
 class Article {
-    string ArticleId;
+    int ArticleId;
     string ArticleTitle;
     User Author;
     bool Acception;
 
     public:
         void SetTitle(string _title) { ArticleTitle = _title; }
-        void SetArticleId(string _articleId) { ArticleId = _articleId; }
+        void SetArticleId(int _articleId) { ArticleId = _articleId; }
+        bool IsArticleValid() {
+            return true;
+            
+        }   
 
    friend class User;
 };
@@ -52,7 +56,8 @@ void RegisterUser() {
     tempUser.SetUserId(UserCount++);
     Users[UserCount] = tempUser;
 }
-// void LoginUser() {}
+void LoginUser() {} // COMPLETE THIS FUCKIN TASK
+
 void RegisterArticle() {
     cout << "ARTICLE REGISTER PAGE" << endl;
     Article tempArticle;
@@ -64,15 +69,32 @@ void RegisterArticle() {
     cout << "Article ID: ";
     string id;
     cin >> id;
-    tempArticle.SetArticleId(id);
+    tempArticle.SetArticleId(ArticleCount++);
+    Articles[ArticleCount] = tempArticle;
     cout << "Register Done!";
     //tempArticle.Author.ArticleIDs(articleCount++);
 }
 
 
 
+
+
 int main() {
-    cout << "WELCOME TO ARTICLE EVAL SYSTEM";
+    cout << "WELCOME TO ARTICLE EVAL SYSTEM" << endl;
+    firstpage:
+    cout << "1. Sign Up\t2. Login" << endl;
+    int command;
+    cin >> command;
+    switch(command) {
+        case 1:
+            RegisterUser();
+        case 2:
+            LoginUser();
+        default:
+            cout << "Error: Unknown command!!";
+            goto firstpage;
+    }
+    
 
     
 
