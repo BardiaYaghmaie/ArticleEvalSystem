@@ -24,17 +24,23 @@ class Article {
     int ArticleId;
     string ArticleTitle;
     User Author;
+    string Content;
+    int ArticleCode;
     bool Acception;
 
     public:
         void SetTitle(string _title) { ArticleTitle = _title; }
         void SetArticleId(int _articleId) { ArticleId = _articleId; }
+        void SetContent(string _content) { Content = _content; }
+        void SetArticleCode(int _articleCode) { ArticleCode = _articleCode;}
         bool IsArticleValid() {
             return true;
             
-        }   
+        }
+          
 
    friend class User;
+   friend bool ValidateArticle(Article a);
 };
 //Article Articles[100];
 vector <Article> Articles;
@@ -66,14 +72,20 @@ void RegisterArticle() {
     string title;
     cin >> title;
     tempArticle.SetTitle(title);
-    cout << "Article ID: ";
-    string id;
-    cin >> id;
+    cout << "Article Code: ";
+    int code;
+    cin >> code;
+    tempArticle.SetArticleCode(code);
     tempArticle.SetArticleId(ArticleCount++);
     Articles[ArticleCount] = tempArticle;
     cout << "Register Done!";
     //tempArticle.Author.ArticleIDs(articleCount++);
 }
+bool ValidateArticle(Article article) {
+            bool validTitle;
+            bool validateContent;
+            
+        } 
 
 
 
@@ -88,12 +100,16 @@ int main() {
     switch(command) {
         case 1:
             RegisterUser();
+            //goto login;
         case 2:
             LoginUser();
+            goto panel;
         default:
             cout << "Error: Unknown command!!";
             goto firstpage;
     }
+    panel:
+        cout << "Panel";
     
 
     
