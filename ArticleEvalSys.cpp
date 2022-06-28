@@ -55,7 +55,7 @@ public:
 
 
 	friend class User;
-	friend bool ValidateArticle(Article a);
+	friend bool ValidateArticle(Article* a);
 	static int ArticleCount;
 };
 //Article Articles[100];
@@ -69,22 +69,23 @@ User* LoggedInUser = NULL;
 
 void RegisterUser() {
 	cout << "USER REGISTER PAGE" << endl;
-	User tempUser;
+	User* tempUser;
 	cout << "Username: ";
 	string name;
 	cin >> name;
-	tempUser.SetUsername(name);
+	tempUser->SetUsername(name);
 	cout << "Password: ";
 	string pass;
 	cin >> pass;
-	tempUser.SetPassword(pass);
+	tempUser->SetPassword(pass);
 	cout << "Register Done!" << endl;
 	//In my idea , i think it is a better idea to use a static field in User class instead of defining a global varible
 	//tempUser.SetUserId(UserCount++);
 	//Users[UserCount] = tempUser;
 	//instead of the above code , we use the following (because of the using of an static field in class "User")
 	User::UserCount++;   
-	Users.push_back(&tempUser);  
+    cout << tempUser->GetUsername();
+	Users.push_back(tempUser);  
 }
 // COMPLETE THIS FUCKIN TASK : ok.consider it done
 
@@ -127,24 +128,24 @@ bool LoginUser() {
 
 bool RegisterArticle(){
 	cout << "ARTICLE REGISTER PAGE" << endl;
-	Article tempArticle;
+	Article* tempArticle;
 
 	cout << "Title: ";
 	string title;
 	cin >> title;
-	tempArticle.SetTitle(title);
+	tempArticle->SetTitle(title);
 	cout << "Article Code: ";
 	int code;
 	cin >> code;
-	tempArticle.SetArticleCode(code);
-	tempArticle.SetAuthor(LoggedInUser);  
+	tempArticle->SetArticleCode(code);
+	tempArticle->SetAuthor(LoggedInUser);  
 	//tempArticle.SetArticleId(ArticleCount++);
 	//Articles[ArticleCount] = tempArticle;
 	Article::ArticleCount++;  
-	tempArticle.SetArticleId(Article::ArticleCount);  
+	tempArticle->SetArticleId(Article::ArticleCount);  
 	if (ValidateArticle(tempArticle)) // check wether this temp article is valid or not . if it is valid , we add this article to the list otherwise we don't add this article to ther article's list
 	{
-		Articles.push_back(&tempArticle);  
+		Articles.push_back(tempArticle);  
 		cout << "Register Done!";  
 		return true;  
 	}
@@ -208,6 +209,7 @@ int WordCounter(Article* article){
   // counted. Increment word count one more time to get
   // no. of words
   words = words + 1;
+  return words;
    
 }
 bool ValidateArticle(Article* article) {
@@ -222,6 +224,7 @@ bool ValidateArticle(Article* article) {
         return false;
     
     // TITLE VALIDATION
+    return true;
 
     
 	
