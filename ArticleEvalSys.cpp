@@ -136,6 +136,10 @@ bool RegisterArticle(){
 	cout << "Article Code: ";
 	int code;
 	cin >> code;
+    cout << "Article content : ";
+    string content;
+    cin >> content;
+    tempArticle->SetContent(content);
 	tempArticle->SetArticleCode(code);
 	tempArticle->SetAuthor(LoggedInUser);  
 	//tempArticle.SetArticleId(ArticleCount++);
@@ -230,6 +234,14 @@ bool ValidateArticle(Article* article) {
 
 }
 
+void ShowAllArticles(){
+    for (int i = 0; i <  Articles.size(); i++)
+    {
+        cout << Articles[i]->GetArticleTitle() << "By: " << Articles[i]->GetAuthor() << endl;
+        /* code */
+    }
+}
+
 int main() {
 	cout << "WELCOME TO ARTICLE EVAL SYSTEM" << endl;
 firstpage:
@@ -257,11 +269,21 @@ firstpage:
 		goto firstpage;
 	}
 panel:
-	cout << "Panel";
+    cout << " Welcome " << LoggedInUser->GetUsername()<< " :)" << endl;
+	cout << "User Panel" << endl;
+    cout << "1. Register Article\t2. See List of Articles" << endl;
+    int cmd;
+    cin >> cmd;
+    switch (cmd) {
+        case 1:
 
-
-
-
-
+            bool flg = RegisterArticle();
+            if(flg){
+                cout << "register done";
+            }
+            else{
+                cout << "????";
+            }
+    }
 
 }
