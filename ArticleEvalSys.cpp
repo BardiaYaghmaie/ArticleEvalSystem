@@ -64,12 +64,12 @@ public:
 vector <Article*> Articles;  
 //int ArticleCount = 0;
 int Article::ArticleCount = 0;  
-User* LoggedInUser = NULL;  
+User* LoggedInUser = new User();  
 
 
 void RegisterUser() {
 	cout << "USER REGISTER PAGE" << endl;
-	User* tempUser;
+	User* tempUser = new User();
 	cout << "Username: ";
 	string name;
 	cin >> name;
@@ -84,7 +84,6 @@ void RegisterUser() {
 	//Users[UserCount] = tempUser;
 	//instead of the above code , we use the following (because of the using of an static field in class "User")
 	User::UserCount++;   
-    cout << tempUser->GetUsername();
 	Users.push_back(tempUser);  
 }
 // COMPLETE THIS FUCKIN TASK : ok.consider it done
@@ -109,7 +108,7 @@ bool LoginUser() {
 	cout << "Password : ";
 	cin >> password;
 	User* usr = FindUserByUsernameAndPassword(username, password);  
-	if (!usr)     // this means that there is at least one user with the given details . so the user can log in
+	if (usr)     // this means that there is at least one user with the given details . so the user can log in
 	{
 		//i should write something here that logs the user in
 		 // so i go up and define a global varibale named : "loggedInUser" which is of type User*;
@@ -128,7 +127,7 @@ bool LoginUser() {
 
 bool RegisterArticle(){
 	cout << "ARTICLE REGISTER PAGE" << endl;
-	Article* tempArticle;
+	Article* tempArticle = new Article();
 
 	cout << "Title: ";
 	string title;
@@ -259,6 +258,7 @@ firstpage:
 	}
 panel:
 	cout << "Panel";
+
 
 
 
