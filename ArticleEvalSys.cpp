@@ -42,6 +42,8 @@ public:
 	void SetArticleId(int _articleId) { ArticleId = _articleId; }
 	void SetContent(string _content) { Content = _content; }
 	void SetArticleCode(int _articleCode) { ArticleCode = _articleCode; }
+    string GetArticleContent() { return Content; }
+    string GetArticleTitle() { return ArticleTitle; }
 	// we should have function like : setAuthor and getAuthor
 	User* GetAuthor() { return Author; }  
 	void SetAuthor(User* _author) { Author = _author; }  
@@ -122,7 +124,7 @@ bool LoginUser() {
 	}
 
 } 
-//void RegisterArticle() {
+
 bool RegisterArticle(){
 	cout << "ARTICLE REGISTER PAGE" << endl;
 	Article tempArticle;
@@ -154,11 +156,75 @@ bool RegisterArticle(){
 	
 	//tempArticle.Author.ArticleIDs(articleCount++);
 }
-bool ValidateArticle(Article article) {
-	bool validTitle;
-	bool validateContent;
+int getEditDistance(std::string first, std::string second)
+{
+	int m = first.length();
+	int n = second.length();
 
-    return 0;
+	int T[m + 1][n + 1];
+	for (int i = 1; i <= m; i++) {
+		T[i][0] = i;
+	}
+
+	for (int j = 1; j <= n; j++) {
+		T[0][j] = j;
+	}
+
+	for (int i = 1; i <= m; i++) {
+		for (int j = 1; j <= n; j++) {
+			int weight = first[i - 1] == second[j - 1] ? 0: 1;
+			T[i][j] = std::min(std::min(T[i-1][j] + 1, T[i][j-1] + 1), T[i-1][j-1] + weight);
+		}
+	}
+
+	return T[m][n];
+}
+double Similarity(string first, string second){
+double max_length = std::max(first.length(), second.length());
+	if (max_length > 0) {
+		return (max_length - getEditDistance(first, second)) / max_length;
+	}
+	return 1.0;
+
+}
+int WordCounter(Article* article){
+    int words = 0;
+  
+  int lenOfSentence = article->GetArticleContent().length();
+
+  // run for loop from i = 0 to i = lenOfSentence
+  // to iterate through each character of the string
+  for(int i = 0; i < lenOfSentence; i++)
+  {
+    // check if current character is a space
+    if(article->GetArticleContent()[i] == ' ')
+    {
+      // if it is a space, increment word count
+      words++;
+    }
+
+  }
+  // at the end of the for loop, no. of spaces have been
+  // counted. Increment word count one more time to get
+  // no. of words
+  words = words + 1;
+   
+}
+bool ValidateArticle(Article* article) {
+    for (int i = 0; i < Articles.size(); i++) {
+        if (Articles[i] != article) {
+            if (Similarity(article->GetArticleContent(), Articles[i]->GetArticleContent()) > 0.5)
+                return false;
+
+        }
+    }
+    if (WordCounter(article) > 5000 || WordCounter(article) < 100)
+        return false;
+    
+    // TITLE VALIDATION
+
+    
+	
 
 }
 
