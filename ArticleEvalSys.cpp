@@ -164,6 +164,7 @@ int getEditDistance(std::string first, std::string second)
 {
 	int m = first.length();
 	int n = second.length();
+    
 
 	int T[m + 1][n + 1];
 	for (int i = 1; i <= m; i++) {
@@ -271,19 +272,28 @@ firstpage:
 panel:
     cout << " Welcome " << LoggedInUser->GetUsername()<< " :)" << endl;
 	cout << "User Panel" << endl;
-    cout << "1. Register Article\t2. See List of Articles" << endl;
+    cout << "1. Register Article\t2. See List of Articles\t3. Sign Out" << endl;
     int cmd;
     cin >> cmd;
     switch (cmd) {
-        case 1:
+        case 1:{
 
             bool flg = RegisterArticle();
             if(flg){
                 cout << "register done";
             }
+
             else{
                 cout << "????";
             }
+        }
+        case 2:
+            ShowAllArticles();
+        case 3:
+            LoggedInUser = NULL;
+            goto firstpage;
+        default:
+            goto panel;
     }
 
 }
