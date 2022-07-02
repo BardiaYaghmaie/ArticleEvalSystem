@@ -37,15 +37,17 @@ class Article {
 	string ArticleTitle;
 	//User Author;
 	User Author;
+	User Author2;
 	string Content;
 	int ArticleCode;
-	bool Acception;
 
 public:
 	void SetTitle(string _title) { ArticleTitle = _title; }
 	void SetArticleId(int _articleId) { ArticleId = _articleId; }
 	void SetContent(string _content) { Content = _content; }
 	void SetArticleCode(int _articleCode) { ArticleCode = _articleCode; }
+    void SetAuthor2 (User _author) { Author2 = _author;}
+    User GetAuthor2 () { return Author2; }
 	string GetArticleContent() { return Content; }
 	string GetArticleTitle() { return ArticleTitle; }
 	// we should have function like : setAuthor and getAuthor
@@ -57,19 +59,55 @@ public:
 		return true;
 	}
 
-
+    bool Acception;
+    bool IsTeam;
 	friend class User;
 	friend bool ValidateArticle(Article* a);
 	static int ArticleCount;
 };
+bool IsStrongPassword(string input) { 
+    int n = input.length();
+    // Checking lower alphabet in string
+    bool hasLower = false, hasUpper = false;
+    bool hasDigit = false, hasSpecialChar = false;
+    string normalChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
+    for (int i = 0; i < n; i++) {
+        if (islower(input[i]))
+            hasLower = true;
+        if (isupper(input[i]))
+            hasUpper = true;
+        if (isdigit(input[i]))
+            hasDigit = true;
+        size_t special = input.find_first_not_of(normalChars);
+        if (special != string::npos)
+            hasSpecialChar = true;
+    }
+    if (hasLower && hasUpper && hasDigit && hasSpecialChar)
+        return true;
+
+    return false;
+    
+
+
+}
 //Article Articles[100];
 //vector<Article> Articles;
 // I really like to use pointers because we can use the "NULL" feature of pointers to conditionalize our code better I think
 vector <Article*> Articles;
 //int ArticleCount = 0;
 int Article::ArticleCount = 0;
-User LoggedInUser ;
+User LoggedInUser;
 
+User* FindUserByUsername(vector<User*> users,string username) { 
+ for (int i = 0; i < users.size(); i++) 
+ { 
+  if (users.at(i)->GetUsername()  == username) 
+  { 
+   return users.at(i); 
+  } 
+ } 
+ return NULL; 
+}
 
 void RegisterUser() {
 	cout << "\nUSER REGISTERATION PAGE\n" << endl;
@@ -78,10 +116,29 @@ void RegisterUser() {
 	string name;
 	cin >> name;
 	tempUser->SetUsername(name);
+    setpassword:
+    cout << "\nPassword Must Contain SpecialCharacter, Digits, Upper and Lower Cases" << endl;
 	cout << "Password: ";
 	string pass;
 	cin >> pass;
-	tempUser->SetPassword(pass);
+	if (IsStrongPassword(pass)) {
+        confirm:
+        cout << "\nConfirm Password: ";
+        string conf;
+        cin >> conf;
+        if (conf == pass)
+            tempUser->SetPassword(pass);
+        else {
+            cout << "\n\t Passwords Do Not Match\n" << endl;
+            goto confirm;
+
+        }
+    }
+    else {
+        cout << "\n\tInvalid Password\n" << endl;
+        goto setpassword;
+    }
+
 	tempUser->SetUserId(User::UserCount);
 	cout << "\n\tRegister Done!" << endl;
 	//In my idea , i think it is a better idea to use a static field in User class instead of defining a global varible
@@ -164,17 +221,42 @@ void RegisterArticle() {
 	//Articles[ArticleCount] = tempArticle;
 	Article::ArticleCount++;
 	tempArticle->SetArticleId(Article::ArticleCount);
+    int choice; 
+    cout << "does your article have a co-worker ? type 1 for yes 2 for no : " << endl; 
+    cin >> choice; 
+    if (choice == 1) 
+    { 
+    cout << "Type the username of your friend : " << endl; 
+    string uname; 
+    cin >> uname; 
+    User* usr = FindUserByUsername(Users,uname); 
+    if (usr == NULL) 
+    { 
+     cout << "not found"; 
+     tempArticle->IsTeam = false; 
+    } 
+    else { 
+     tempArticle->SetAuthor2(*usr); 
+     tempArticle->IsTeam = true; 
+    } 
+    } 
+    
+    else { 
+     // do nothing 
+     tempArticle->IsTeam = false; 
+    }
 	if (ValidateArticle(tempArticle)) // check wether this temp article is valid or not . if it is valid , we add this article to the list otherwise we don't add this article to ther article's list
 	{
-		Articles.push_back(tempArticle);
         cout << "\n\tArticle Registered Successfully\n" << endl;
-
+        tempArticle->Acception = true;
 	}
 	else {
-        cout << "\n\tArticle Cannot  Be Register\n" << endl;
-		Article::ArticleCount--; // because we ++ it in above lines but now because we do not regiser , we -- it
+        cout << "\n\tArticle Rejected !!!\n" << endl;
+        tempArticle->Acception = false;
 
 	}
+	Articles.push_back(tempArticle);
+
 
 	//tempArticle.Author.ArticleIDs(articleCount++);
 }
@@ -323,6 +405,39 @@ bool IsxInArray(vector<T> arr, int x) {
 //	}
 //
 //}
+vector <string> ConvertStringToArrayOfWords(string text) { 
+size_t t = text.find("\n"); 
+while (t != string::npos) 
+{ 
+
+ text.erase(text.begin() + t); 
+ t = text.find("\n"); 
+} 
+// now all spaces are moved 
+vector<string> wordsArr; 
+t = text.find(" "); 
+while (t != string::npos) 
+{ 
+ string x = text.substr(0, t); 
+ wordsArr.push_back(x); 
+ text.erase(0, t+1); 
+ t = text.find(" "); 
+} 
+return wordsArr; 
+}
+int CountXInText(string x, string text) { 
+vector<string> wordsArr = ConvertStringToArrayOfWords(text); 
+// now er have the array of words; 
+int counter = 0; 
+for (int i = 0; i < wordsArr.size(); i++) 
+{ 
+if (x == wordsArr[i]) 
+{ 
+ counter++; 
+} 
+} 
+return counter; 
+}
 bool ValidateArticle(Article* article) {
 	//article content validation first
 	bool flagArticleContent = true;
@@ -357,7 +472,7 @@ bool ValidateArticle(Article* article) {
 		content.erase(content.begin() + index_of_new_line);
 		index_of_new_line = content.find("\n");
 	}
-	counter--;
+	//counter--;
 	if (counter < 3)
 	{
 		flagParagraphCountCondition = false;
@@ -368,6 +483,20 @@ bool ValidateArticle(Article* article) {
 	{
 		flagArticleTitle = false;
 	}
+    //validating that there is no words which has repeated more than 50 times 
+    content = article->GetArticleContent(); 
+    bool flagCountWordUnder50 = true; 
+    vector<string>wordsArr = ConvertStringToArrayOfWords(content); 
+    for (int i = 0; i < wordsArr.size(); i++) 
+    { 
+    string x = wordsArr[i]; 
+    int countX = CountXInText(x, content); 
+    if (countX > 50) 
+    { 
+    flagCountWordUnder50 = false; 
+    break; 
+    } 
+ }
 	// spell checking . just calling the function here : 
 	//bool flagSpellChecker = SpellChecker(article->GetArticleContent());
 	//total validation : 
@@ -378,20 +507,37 @@ bool ValidateArticle(Article* article) {
 	else {
 		return false;
 	}
+
  
 }
-
-void ShowAllArticles() {
-    if (Articles.size() == 0)
-        cout << "\n\t404 - No Articles Available\n"<< endl;
-    else {
-	for (int i = 0; i < Articles.size(); i++)
-	{
-		cout << "\n" << Articles[i]->GetArticleTitle() << " By: " << Articles[i]->GetAuthor().GetUsername() << "\n" <<endl;
-		/* code */
-	}
-    }
+void ShowAllArticles() { 
+ if (Articles.size() <= 0) 
+  cout << "\n\t404-No Articles Were Found\n" << endl; 
+ else { 
+  for (int i = 0; i < Articles.size(); i++) 
+  { 
+   string authors_text; 
+   if (Articles[i]->IsTeam) 
+   { 
+    authors_text = Articles[i]->GetAuthor().GetUsername() + " , " + Articles[i]->GetAuthor2().GetUsername(); 
+   } 
+   else { 
+    authors_text = Articles[i]->GetAuthor().GetUsername(); 
+   } 
+   if (Articles[i]->Acception) 
+   { 
+    cout << "[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Accepted" << endl; 
+ 
+   } 
+   else { 
+    cout << "[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Rejected" << endl; 
+ 
+   } 
+ 
+  } 
+ } 
 }
+
 
 
 
