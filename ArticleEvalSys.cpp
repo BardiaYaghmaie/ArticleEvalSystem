@@ -222,11 +222,12 @@ void RegisterArticle() {
 	Article::ArticleCount++;
 	tempArticle->SetArticleId(Article::ArticleCount);
     int choice; 
-    cout << "does your article have a co-worker ? type 1 for yes 2 for no : " << endl; 
+    cout << "Is This Article A Collaborator?" << endl;
+    cout << "\n\t1. Yes\t2. No\n" << endl; 
     cin >> choice; 
     if (choice == 1) 
     { 
-    cout << "Type the username of your friend : " << endl; 
+    cout << "Type the username of your collaborator : " << endl; 
     string uname; 
     cin >> uname; 
     User* usr = FindUserByUsername(Users,uname); 
@@ -526,11 +527,11 @@ void ShowAllArticles() {
    } 
    if (Articles[i]->Acception) 
    { 
-    cout << "[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Accepted" << endl; 
+    cout << "\n\t[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Accepted\n" << endl; 
  
    } 
    else { 
-    cout << "[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Rejected" << endl; 
+    cout << "\n\t[*]" << Articles[i]->GetArticleTitle() << "  By:  " <<authors_text << "  " << "Rejected\n" << endl; 
  
    } 
  
@@ -573,7 +574,7 @@ firstpage:
 panel:
 	cout << "\n\tWelcome " << LoggedInUser.GetUsername() << " :)\n" << endl;
 panel2:
-	cout << "User Panel\n" << endl;
+	cout << "\nUser Panel\n" << endl;
 	cout << "\t1. Register Article        2. See List of Articles        3. Sign Out" << endl;
 	int cmd;
 	cin >> cmd;
